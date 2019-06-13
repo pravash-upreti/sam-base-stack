@@ -1,1 +1,3 @@
 build
+templates/stack.yml.j2
+*.pyc

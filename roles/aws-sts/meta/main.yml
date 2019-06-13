@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  description: Uses the AWS STS service to assume an IAM role
+  min_ansible_version: 2.2
+  categories:
+  - cloud
+  galaxy_tags:
+  - aws
+  - sts

@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  description: Orchestrates creation/update/deletion of CloudFormation stacks
+  min_ansible_version: 2.2
+  categories:
+  - cloud
+  galaxy_tags:
+  - aws
+  - cloudformation

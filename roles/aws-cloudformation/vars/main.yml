@@ -1,0 +1,7 @@
+---
+cf_default_stack_policy:
+  Statement:
+    - Effect: "Allow"
+      Action: "Update:*"
+      Principal: "*"
+      Resource: "*"

@@ -1,0 +1,53 @@
+---
+# name of stack e.g. vyaguta-development
+Stack.Name: stack_name
+
+# role for sts 
+Sts.Role: arn:aws:iam::<account_id>:role/<role_name>
+
+# region to overwrite the default 
+Sts.Region: aws_region
+
+# overwrite the stack input
+Stack.Inputs:
+  # add one devops user from that account 
+  DevOpsUser: '<aws user>'
+
+  # boolean value to create a RDS on base stack
+  CreateRDS: '<boolean>'
+
+  # host zone name for project e.g example.com.
+  HostedZoneName: '<string_value_of_hostzonename>'
+
+  # root domain of the project e.g blog.example.com
+  RootDomainName: '<domain_name>'
+
+  # certificate arn to be include in cloudfront e.g arn:aws:acm:<region>:<account_id>:certificate/<token> 
+  CertificateARN: '<certificate_arn>'
+  
+  # base path for api e.g. api
+  BasePath: '<api_path>'
+  
+  # boolean for deploying frontend 
+  HostWebsite: '<boolean>'
+
+  # vpc id to deploy the stack e.g vpc-12345678
+  VpcId: '<vpc_id>'
+
+  # list of private and public subnet with minimum two for HA
+  PrivateSubnetA: '<subnet_id>'
+  PrivateSubnetB: '<subnet_id>'
+  PublicSubnetA: '<subnet_id>'
+  PublicSubnetB: '<subnet_id>'
+  
+  # tag to be used in resources
+  ProjectName: '<project_name>'
+  ProjectCustomer: '<customer_name>'
+  ProjectType: '<project_type>'
+  ProjectDescription: '<description>'
+  ProjectDeployment: '<deployment>'
+
+# list of stages used in projects e.g. dev, qa, uat
+Stages:
+  - dev
+  

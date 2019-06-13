@@ -1,0 +1,15 @@
+---
+- block:
+    - name: Describe cloudformation stack
+      cloudformation_facts:
+        stack_name: "{{ cf_stack_name }}"
+        all_facts: true
+      register: my_stack
+
+    - name :  ======== > PLEASE COPY JSON DATA AND PROVIDE TO SAM - APPLICATION DEVOPS TEAM < =============
+      debug:
+        msg: "{{ my_stack.ansible_facts.cloudformation[cf_stack_name].stack_outputs }}"
+    
+  tags:
+    - describe
+    
