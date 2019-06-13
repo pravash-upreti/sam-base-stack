@@ -111,15 +111,6 @@ Conditions:
   ShouldCreateWebsite:
     Fn::Equals: [true, Ref: HostWebsite]
   
-#   Subnets:
-#     Type: 'List<AWS::EC2::Subnet::Id>'
-#     Description: The list of SubnetIds in your Virtual Private Cloud (VPC)
-#     ConstraintDescription: >-
-#       must be a list of at least two existing subnets associated with at least
-#       two different availability zones. They should be residing in the selected
-#       Virtual Private Cloud.
-
-
  
 Resources:
 
@@ -334,12 +325,7 @@ Resources:
                     Ref: "WebsiteBucket{{stage}}"
                   - "/*"
             Principal: "*"
-            #Condition: 
-            #  StringLike: 
-            #    aws:Referer: 
-            #      - "http://www.example.com/*"
-            #      - "http://example.com/*"
-      
+          
   
   {% endfor %}
 
@@ -402,12 +388,6 @@ Resources:
                     Ref: "WebsiteBucket"
                   - "/*"
             Principal: "*"
-            #Condition: 
-            #  StringLike: 
-            #    aws:Referer: 
-            #      - "http://www.example.com/*"
-            #      - "http://example.com/*"
-      
                 
   BuildArtifactsBucket:
     Type: AWS::S3::Bucket
@@ -834,10 +814,7 @@ Resources:
               Resource: "*"
         
       
-      #ManagedPolicyArns:
-      #   - arn:aws:iam::aws:policy/CloudWatchLogsReadOnlyAccess
-    
-
+ 
                    
   DevOpsGroup:
     Type: AWS::IAM::Group
@@ -888,15 +865,7 @@ Resources:
             - logs:PutLogEvents
             Resource: arn:aws:logs:*:*:*
 
-      #- PolicyName: AWSDescribeSecurityGroup
-      #  PolicyDocument:
-      #    Version: '2012-10-17'
-      #    Statement:
-      #      - Effect: Allow
-      #        Action:
-      #          - ec2:DescribeSecurityGroups
-      #        Resource: '*'
-        
+   
       ManagedPolicyArns:
          - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
     
@@ -922,33 +891,6 @@ Resources:
       Users: 
         Ref: DevOpsUser
       
-
-  #DomainCertificate:
-  #  Type: 'AWS::CertificateManager::Certificate'
-  #  Properties:
-  #    DomainName: 
-  #      Ref: SubDomainName
-  #    ValidationMethod: DNS
-  #    SubjectAlternativeNames:
-  #      - Fn::Join:
-  #          - ""
-  #          - - "*."
-  #            - Ref: SubDomainName
-  #      - Fn::Join:
-  #          - ""
-  #          - - "www."
-  #            - Ref: SubDomainName
-
-  #DomainName:
-  #  Type: 'AWS::ApiGateway::DomainName'
-  #  Properties:
-  #    DomainName:
-  #      Ref: SubDomainName
-  #    CertificateArn:
-  #      Ref: CertificateARN
- #     EndpointConfiguration:
- #       Types: 
- #         - REGIONAL
 
   {% for stage in list %}  
 
@@ -1189,12 +1131,6 @@ Resources:
       BinaryMediaTypes:
         - Ref: RestApiBinaryMediaTypes
 
-  #    EndpointConfiguration:
-  #      Types: 
-  #        - REGIONAL
-      
-
-
   
   ApiMap{{stage}}: 
     Type: AWS::ApiGateway::Resource
@@ -1260,21 +1196,7 @@ Resources:
       #ClientCertificateId: !Ref ClientCertificate
       Variables:
         Stack: default
-      #MethodSettings:
-      #  - ResourcePath: /
-      #    HttpMethod: GET
-      #    MetricsEnabled: 'true'
-      #    DataTraceEnabled: 'true'
-      #  - ResourcePath: /stack
-      #    HttpMethod: POST
-      #    MetricsEnabled: 'true'
-      #    DataTraceEnabled: 'true'
-      #    ThrottlingBurstLimit: '999'
-      #  - ResourcePath: /stack
-      #    HttpMethod: GET
-      #    MetricsEnabled: 'true'
-      #    DataTraceEnabled: 'true'
-      #    ThrottlingBurstLimit: '555'
+      
       Tags: 
         - 
           Key: "Name"
@@ -1303,148 +1225,6 @@ Resources:
 
     
     {% endfor %}
-
-    
-
-  #CORSROOT:
-  #  DependsOn: "BaseRestApi"
-  #  Type: AWS::ApiGateway::Method
-  #  Properties:
-  #    HttpMethod: OPTIONS
-  #    ResourceId:
-  #      Fn::GetAtt:
-  #        - BaseRestApi
-  #        - RootResourceId
-  #    RestApiId:
-  #      Ref: BaseRestApi
-  #    AuthorizationType: NONE
-  #    Integration:
-  #      IntegrationResponses:
-  #      - StatusCode: 200
-  #        ResponseParameters:
-  #          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-  #          method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
-  #          method.response.header.Access-Control-Allow-Origin: "'*'"
-  #        ResponseTemplates:
-  #          application/json: ''
-  #      PassthroughBehavior: WHEN_NO_MATCH
-  #      RequestTemplates:
-  #        application/json: '{"statusCode": 200}'
-  #      Type: MOCK
-  #    MethodResponses:
-  #   - StatusCode: 200
-  #      ResponseModels:
-  #        application/json: 'Empty'
-  #      ResponseParameters:
-  #          method.response.header.Access-Control-Allow-Headers: false
-  #          method.response.header.Access-Control-Allow-Methods: false
-  #          method.response.header.Access-Control-Allow-Origin: false
-
-  #MethodRoot:
-  #  DependsOn: "BaseRestApi"
-  #  Type: AWS::ApiGateway::Method
-  #  Properties:
-  #    HttpMethod: GET
-  #    ResourceId:
-  #      Fn::GetAtt:
-  #        - BaseRestApi
-  #        - RootResourceId
-  #    RestApiId:
-  #      Ref: BaseRestApi
-  #    AuthorizationType: NONE
-  #    
-  #    Integration:
-  #      IntegrationResponses:
-  #      - StatusCode: 200
-  #        ResponseTemplates:
-  #          application/json: ''
-  #      PassthroughBehavior: WHEN_NO_MATCH
-  #      RequestTemplates:
-  #        application/json: '{"statusCode": 200}'
-  #      Type: MOCK
-  #    MethodResponses:
-  #    - StatusCode: 200
-  #      ResponseModels:
-  #        application/json: 'Empty'
- 
-  #CORSAPI:
-  #  DependsOn: "BaseRestApi"
-  #  Type: AWS::ApiGateway::Method
-  # Properties:
-  #    HttpMethod: OPTIONS
-  #   ResourceId:
-  #      Ref: ApiMap
-  #   RestApiId:
-  #      Ref: BaseRestApi
-  #    AuthorizationType: NONE
-  #    Integration:
-  #      IntegrationResponses:
-  #      - StatusCode: 200
-  #        ResponseParameters:
-  #          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-  #          method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
-  #          method.response.header.Access-Control-Allow-Origin: "'*'"
-  #        ResponseTemplates:
-  #          application/json: ''
-  #      PassthroughBehavior: WHEN_NO_MATCH
-  #      RequestTemplates:
-  #        application/json: '{"statusCode": 200}'
-  #      Type: MOCK
-  #    MethodResponses:
-  #    - StatusCode: 200
-  #      ResponseModels:
-  #        application/json: 'Empty'
-  #      ResponseParameters:
-  #          method.response.header.Access-Control-Allow-Headers: false
-  #          method.response.header.Access-Control-Allow-Methods: false
-  #          method.response.header.Access-Control-Allow-Origin: false
-  
-  #MethodAPI:
-  #  DependsOn: "BaseRestApi"
-  #  Type: AWS::ApiGateway::Method
-  #  Properties:
-  #    HttpMethod: ANY
-  #    ResourceId:
-  #      Ref: ApiMap
-  #    RestApiId:
-  #      Ref: BaseRestApi
-  #    AuthorizationType: NONE
-  #    
-  #    Integration:
-  #      IntegrationResponses:
-  #      - StatusCode: 200
-  #        ResponseTemplates:
-  #          application/json: ''
-  #      PassthroughBehavior: WHEN_NO_MATCH
-  #      RequestTemplates:
-  #        application/json: '{"statusCode": 200}'
-  #      Type: MOCK
-  #    MethodResponses:
-  #    - StatusCode: 200
-  #      ResponseModels:
-  #        application/json: 'Empty'
-
-  #ApiDeployment: 
-    #DependsOn: "MethodRoot"
-  #  Type: AWS::ApiGateway::Deployment
-  #  Properties: 
-  #    RestApiId: 
-  #      Ref: BaseRestApi
-  #    Description: "Default Deployment"
-      #StageName: "default"
-
-  #APIGateway:
-  #  Type: AWS::ApiGateway::BasePathMapping
-  #  Properties:
-  #    BasePath: 
-  #      Ref: BasePath
-  #    DomainName:
-  #      Ref: DomainName
-  #    RestApiId:
-  #      Ref: BaseRestApi
-  #    Stage: "default"
-
-  
 
 
 Outputs:
